@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="logist:Web">
+    <output-path>$PROJECT_DIR$/out/artifacts/logist</output-path>
+    <root id="archive" name="logist_Web.war">
+      <element id="artifact" artifact-name="logist:Web exploded" />
+    </root>
+  </artifact>
+</component>
