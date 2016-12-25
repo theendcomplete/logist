@@ -26,8 +26,8 @@
 <H1>Создание заявки на транспортировку</H1>
 
 
-<form action="${pageContext.request.contextPath}/confirm" method="POST" accept-charset="UTF-8">
-<%--<form action="/save" method="POST">--%>
+<form action="${pageContext.request.contextPath}/confirm" method="POST">
+    <%--<form action="/save" method="POST">--%>
 
     <p>
     <h3>
@@ -61,7 +61,7 @@
         Адрес
     </h3>
     <p>
-        <input type="text" id="address" name="address" placeholder="Введите алрес" ></p>
+        <input type="text" id="address" name="address" placeholder="Введите алрес"></p>
     <h3>
         Количество тарных мест:
     </h3>
@@ -76,14 +76,14 @@
     </h3>
     <p>
 
-        <input type="text" id="comment" name="comment" placeholder="Введите комментарий" ></p>
+        <input type="text" id="comment" name="comment" placeholder="Введите комментарий"></p>
 
     <h3>
         Контрагент:
     </h3>
     <p>
         <input type="text" id="kontragent" name="kontragent" placeholder="Введите имя контрагента\название фирмы"
-               >
+        >
     </p>
 
     <p>

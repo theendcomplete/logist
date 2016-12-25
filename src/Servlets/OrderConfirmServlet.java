@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -14,6 +13,11 @@ import java.io.UnsupportedEncodingException;
  */
 @WebServlet(name = "OrderConfirmServlet")
 public class OrderConfirmServlet extends HttpServlet {
+    public static String decodeGetParameter(String parameter) throws UnsupportedEncodingException {
+        return new String(parameter.getBytes("ISO-8859-1"), "UTF8");
+
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -55,11 +59,5 @@ public class OrderConfirmServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        request.setCharacterEncoding("UTF-8");
 //        response.setCharacterEncoding("UTF-8");
-    }
-
-
-    public static String decodeGetParameter(String parameter) throws UnsupportedEncodingException {
-        return new String(parameter.getBytes("ISO-8859-1"), "UTF8");
-
     }
 }

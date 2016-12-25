@@ -79,14 +79,15 @@
     %>
 </p>
 
-<form action="${pageContext.request.contextPath}/save" method="POST" accept-charset="utf-8">
-    <input type="hidden" name="name" value=<%=name%>>
-    <input type="hidden" name="target" value=<%=target%>>
-    <input type="hidden" name="date_deadline" value=<%=date_deadline%>>
-    <input type="hidden" name="address" value=<%=address%>>
-    <input type="hidden" name="comment" value=<%=comment%>>
-    <input type="hidden" name="kontragent" value=<%=kontragent%>>
-    <input type="hidden" name="boxes" value=<%=boxes%>>
+<%--<form action="${pageContext.request.contextPath}/save" method="POST">--%>
+<form action="${pageContext.request.contextPath}/save" method="POST">
+    <input type="hidden" name="name" value="<%=name%>">
+    <input type="hidden" name="target" value="<%=target%>">
+    <input type="hidden" name="date_deadline" value="<%=date_deadline%>">
+    <input type="hidden" name="address" value="<%=address%>">
+    <input type="hidden" name="comment" value="<%=comment%>">
+    <input type="hidden" name="kontragent" value="<%=kontragent%>">
+    <input type="hidden" name="boxes" value="<%=boxes%>">
     <input type="hidden" name="status" value="new">
     <input type="submit" value="SAVE"/>
 </form>

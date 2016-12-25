@@ -17,14 +17,8 @@ package Filters; /**
 * limitations under the License.
 */
 
+import javax.servlet.*;
 import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 
 /**
  * <p>Example filter that sets the character encoding to be used in parsing the

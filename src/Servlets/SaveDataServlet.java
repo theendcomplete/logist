@@ -8,7 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by theendcomplete on 20.12.2016.
@@ -28,26 +33,11 @@ public class SaveDataServlet extends HttpServlet {
 //    static final String USER = "postgres";
 //    static final String PASS = "Slayer123";
 
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        request.setCharacterEncoding("UTF-8");
-//        response.setCharacterEncoding("UTF-8");
-
-        PrintWriter out = response.getWriter();
-        out.println("save_data_post" + request.getParameterMap());
-//        request.setCharacterEncoding("Cp1251");
-        InsertData(request, response);
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//        request.setCharacterEncoding("UTF-8");
-//        response.setCharacterEncoding("UTF-8");
-    }
-
-
-    public static void InsertData(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public static void InsertData(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException {
         Connection conn = null;
         Statement stmt = null;
+        String sql = "";
+        java.util.Date date = new SimpleDateFormat("dd.mm.yy").parse(request.getParameter("date_deadline"));
         request.setCharacterEncoding("UTF-8");
         try {
             //STEP 2: Register JDBC driver
@@ -65,20 +55,25 @@ public class SaveDataServlet extends HttpServlet {
             stmt.execute("SET NAMES utf8");
 
 
-//            String sql = "insert into orders(name) VALUES (666)"; //+ request.getParameter("first_name")+")";
-//            int boxes = Integer.parseInt(request.getParameter("boxes"));
+            if (request.getParameter("id") == null) {
+                sql = ("INSERT into ORDERS(name,address,target,status,comment,date_deadline,boxes,kontragent) " +
+                        "VALUES ('"
+                        + (String.valueOf(request.getParameter("name")) + "','"
+                        + request.getParameter("address"))) + "','"
+                        + (request.getParameter("target")) + "','"
+                        + (request.getParameter("status")) + "','"
+                        + (request.getParameter("comment")) + "','"
+                        + ((date).toString()) + "','"
+                        + Integer.parseInt(request.getParameter("boxes")) + "','"
+                        + (request.getParameter("kontragent")) + "')";
 
-            String sql = "INSERT into ORDERS(name,address,target,status,date_deadline,boxes,kontragent) VALUES ('"
-                    + (request.getParameter("name") + "','"
-                    + (request.getParameter("address"))) + "','"
-                    + (request.getParameter("target")) + "','"
-                    + (request.getParameter("status")) + "','"
-                    + ((request.getParameter("date_deadline"))) + "','"
-//                    + ((request.getParameter("boxes"))) + "','"
-                    + Integer.parseInt(request.getParameter("boxes")) + "','"
-                    + (request.getParameter("kontragent")) + "');";
+//                + ((request.getParameter("date_deadline"))) + "','"
+            } else {
+                sql = "UPDATE ORDERS set driver =  '" + request.getParameter("driver") + "', status='" + request.getParameter("status") + "' where id =  " + Integer.parseInt(request.getParameter("id"));
+            }
+//stmt.
+//            PreparedStatement preparedStatement = conn.
             stmt.executeUpdate(sql);
-
 
             System.out.println("Goodbye!");
         } catch (ClassNotFoundException e) {
@@ -91,16 +86,41 @@ public class SaveDataServlet extends HttpServlet {
             e.printStackTrace();
             PrintWriter out = response.getWriter();
             out.println("error" + e);
+
         } finally {
             System.out.println("fin!");
             PrintWriter out = response.getWriter();
             out.println("Done");
         }
         System.out.println("Goodbye!");
+
+//        request.getAttribute("javax.servlet.forward.request_uri");
+        response.sendRedirect(request.getHeader("referer"));
+
     }
 
     public static String decodeGetParameter(String parameter) throws UnsupportedEncodingException {
         return new String(parameter.getBytes("ISO-8859-1"), "UTF8");
+    }
+
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
+        PrintWriter out = response.getWriter();
+        out.println("save_data_post" + request.getParameterMap());
+//        request.setCharacterEncoding("Cp1251");
+        try {
+            InsertData(request, response);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            out.println("save_error: " + e);
+        }
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        request.setCharacterEncoding("UTF-8");
+//        response.setCharacterEncoding("UTF-8");
     }
 }
 
