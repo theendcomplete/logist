@@ -22,5 +22,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Tomcat 7.0.73" level="application_server_libraries" />
     <orderEntry type="library" name="mysql-connector-java-6.0.5-bin" level="project" />
     <orderEntry type="library" name="postgresql-9.4.1212.jre6" level="project" />
+    <orderEntry type="library" name="mysql-connector-java-6.0.5-bin1" level="project" />
   </component>
 </module>

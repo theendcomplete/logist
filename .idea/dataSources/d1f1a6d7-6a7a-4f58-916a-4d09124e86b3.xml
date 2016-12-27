@@ -65,15 +65,19 @@
       <Position>13</Position>
       <DataType>text|0</DataType>
     </column>
-    <index id="21" parent="7" name="ORDERS_id_uindex">
+    <column id="21" parent="7" name="date_appontment">
+      <Position>14</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <index id="22" parent="7" name="ORDERS_id_uindex">
       <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="22" parent="7" name="PRIMARY">
+    <key id="23" parent="7" name="PRIMARY">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <key id="23" parent="7" name="ORDERS_id_uindex">
+    <key id="24" parent="7" name="ORDERS_id_uindex">
       <ColNames>id</ColNames>
       <UnderlyingIndexName>ORDERS_id_uindex</UnderlyingIndexName>
     </key>

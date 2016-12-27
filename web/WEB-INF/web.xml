@@ -59,6 +59,16 @@
         <url-pattern>/save</url-pattern>
     </servlet-mapping>
 
+
+    <servlet>
+        <servlet-name>SingleOrder</servlet-name>
+        <servlet-class>Servlets.SingleOrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SingleOrder</servlet-name>
+        <url-pattern>/singleorder</url-pattern>
+    </servlet-mapping>
+
     <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>

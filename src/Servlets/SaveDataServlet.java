@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by theendcomplete on 20.12.2016.
@@ -22,7 +23,8 @@ import java.text.SimpleDateFormat;
 public class SaveDataServlet extends HttpServlet {
     static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     //    static final String DB_URL = "jdbc:mysql://glassfish:3306/logist";
-    static final String DB_URL = "jdbc:mysql://glassfish:3306/logist?useUnicode=true&characterEncoding=utf8";
+    static final String DB_URL = "jdbc:mysql://glassfish:3306/logist?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=MSK&characterEncoding=utf8";
+//    static final String DB_URL = "jdbc:mysql://192.168.32.92:3306/logist?useUnicode=true&characterEncoding=utf8";
 //    static final String DB_URL = "jdbc:mysql://glassfish:3306/logist?useUnicode=true&characterEncoding=ISO-8859-1";
 //    static final String DB_URL = "jdbc:postgresql://server4:5432/logist";
 
@@ -36,8 +38,23 @@ public class SaveDataServlet extends HttpServlet {
     public static void InsertData(HttpServletRequest request, HttpServletResponse response) throws IOException, ParseException {
         Connection conn = null;
         Statement stmt = null;
+
+        java.util.Date date = new Date();
         String sql = "";
-        java.util.Date date = new SimpleDateFormat("dd.mm.yy").parse(request.getParameter("date_deadline"));
+        String dateSql = "";
+        SimpleDateFormat sqlFormat = new SimpleDateFormat("yy.MM.dd hh:mm:ss");
+        if ((request.getParameter("date_deadline") != null)) {
+            date = new SimpleDateFormat("dd.MM.yy").parse(request.getParameter("date_deadline"));
+//            sqlFormat = new SimpleDateFormat("yy.mm.dd");
+            dateSql = sqlFormat.format((date));
+            date = new SimpleDateFormat("yy.MM.dd hh:mm:ss").parse(dateSql);
+        } else if (request.getParameter("id") == null) {
+            System.out.println("deadline is null!");
+            PrintWriter outError = response.getWriter();
+            outError.println("Дата отправки'\'поставки не может быть пустой!!");
+        }
+
+
         request.setCharacterEncoding("UTF-8");
         try {
             //STEP 2: Register JDBC driver
@@ -54,7 +71,6 @@ public class SaveDataServlet extends HttpServlet {
             stmt.execute("SET CHARACTER SET utf8");
             stmt.execute("SET NAMES utf8");
 
-
             if (request.getParameter("id") == null) {
                 sql = ("INSERT into ORDERS(name,address,target,status,comment,date_deadline,boxes,kontragent) " +
                         "VALUES ('"
@@ -63,13 +79,20 @@ public class SaveDataServlet extends HttpServlet {
                         + (request.getParameter("target")) + "','"
                         + (request.getParameter("status")) + "','"
                         + (request.getParameter("comment")) + "','"
-                        + ((date).toString()) + "','"
+//                        + ((date).toString()) + "','"
+                        + ((dateSql)) + "','"
                         + Integer.parseInt(request.getParameter("boxes")) + "','"
                         + (request.getParameter("kontragent")) + "')";
 
 //                + ((request.getParameter("date_deadline"))) + "','"
             } else {
-                sql = "UPDATE ORDERS set driver =  '" + request.getParameter("driver") + "', status='" + request.getParameter("status") + "' where id =  " + Integer.parseInt(request.getParameter("id"));
+                date = new SimpleDateFormat("yy.mm.dd hh:mm:ss").parse(request.getParameter("date_changed"));
+                sql = "UPDATE ORDERS set " +
+                        "driver =  '" + request.getParameter("driver") + "', " +
+                        "status='" + request.getParameter("status") + "', " +
+                        "date_changed = '" + sqlFormat.format(date) + "' " +
+                        "date_appointment='" + request.getParameter("date_appointment") + "' " +
+                        "where id =  " + Integer.parseInt(request.getParameter("id"));
             }
 //stmt.
 //            PreparedStatement preparedStatement = conn.
@@ -91,10 +114,26 @@ public class SaveDataServlet extends HttpServlet {
             System.out.println("fin!");
             PrintWriter out = response.getWriter();
             out.println("Done");
+            try {
+                conn.close();
+                System.out.println("connection closed!");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("error closing connection!");
+                PrintWriter outError = response.getWriter();
+                outError.println("error closing connection! " + e);
+            }
         }
+
         System.out.println("Goodbye!");
 
 //        request.getAttribute("javax.servlet.forward.request_uri");
+        try {
+            System.out.println("sleeping!");
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         response.sendRedirect(request.getHeader("referer"));
 
     }
@@ -121,6 +160,14 @@ public class SaveDataServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 //        request.setCharacterEncoding("UTF-8");
 //        response.setCharacterEncoding("UTF-8");
+    }
+
+    private String reTurnRequestParameter(HttpServletRequest request, String parameter) {
+        if (request.getParameter(parameter) != null) {
+
+            return request.getParameter(parameter);
+        } else
+            return "";
     }
 }
 

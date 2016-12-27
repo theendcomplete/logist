@@ -8,6 +8,15 @@
     <title>Создание заявки на транспортировку</title>
     <meta http-equiv="X-RU-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+
+    <%--<!-- this should go after your </body> -->--%>
+    <%--<link rel="stylesheet" type="text/css" href="/build/jquery.datetimepicker.css"/>--%>
+    <%--<script src="/jquery.js"></script>--%>
+    <%--<script src="/build/jquery.datetimepicker.full.min.js"></script>--%>
+
+
+    <%--//---Рабочий--%>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -19,6 +28,7 @@
             });
         });
     </script>
+    <%--//---Рабочий />--%>
 </head>
 <body>
 
@@ -54,6 +64,8 @@
 
     <p>
         <input type="text" placeholder="Выберите дату" name="date_deadline" id="date_deadline">
+
+
     </p>
 
 
@@ -91,4 +103,6 @@
     </p>
 </form>
 </body>
+
+
 </html>

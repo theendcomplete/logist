@@ -12,6 +12,17 @@
 <html>
 <head>
     <title>Управление заявками</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#date_appointment").datepicker({
+                dateFormat: "dd.mm.yy"
+            });
+        });
+    </script>
 </head>
 
 <BODY>
@@ -36,6 +47,7 @@ You clicked
     <!--
     function button1() {
         document.form1.buttonName.value = "button 1"
+//        document.close();
         form1.submit()
     }
     function button2() {
@@ -52,7 +64,8 @@ You clicked
     final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
     Class.forName("com.mysql.jdbc.Driver");
 
-    Connection connection = DriverManager.getConnection("jdbc:mysql://glassfish:3306/logist", "root", "Slayer123");
+    Connection connection = DriverManager.getConnection("jdbc:mysql://glassfish:3306/logist?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=MSK&characterEncoding=utf8", "root", "Slayer123");
+//    Connection connection = DriverManager.getConnection("jdbc:mysql://192.168.32.92:3306/logist", "root", "Slayer123");
 
     Statement statement = connection.createStatement();
 
@@ -62,7 +75,8 @@ You clicked
     String id = request.getParameter("id");
 
     ResultSet resultset =
-            statement.executeQuery("SELECT * FROM ORDERS WHERE status = 'new'");
+            statement.executeQuery("SELECT * FROM ORDERS WHERE status = 'new' ORDER BY (`date_deadline`) ASC ");
+
 %>
 <TABLE BORDER="1">
     <TR>
@@ -77,16 +91,19 @@ You clicked
         <%--<TH>Исполнена:</TH>--%>
         <TH>Тарные места</TH>
         <TH>Контрагент</TH>
-        <%--<TH>Комментарий:</TH>--%>
+        <TH>Водитель:</TH>
         <TH>Комментарий:</TH>
-        <%--<TH>Водитель:</TH>--%>
-        <TH>Назначить водителя:</TH>
+        <%--<TH>Комментарий:</TH>--%>
+
+        <%--<TH>Назначить водителя:</TH>--%>
+        <%--<TH>Назначить дату :</TH>--%>
     </TR>
 
     <%
 
         if (!resultset.next()) {
             out.println("Sorry, could not find that publisher. ");
+            connection.close();
         } else {
             while (resultset.next()) {
     %>
@@ -94,7 +111,7 @@ You clicked
 
     <TR>
 
-        <form action="${pageContext.request.contextPath}/save" method="POST" accept-charset="UTF-8">
+        <form action="${pageContext.request.contextPath}/singleorder" method="POST" accept-charset="UTF-8">
             <TD>
                 <%= resultset.getString(1) %>
                 <%--//id--%>
@@ -136,27 +153,36 @@ You clicked
                 <%= resultset.getString(11) %>
                 <%--//Контрагент--%>
             </TD>
-            <%--<TD>--%>
-            <%--<%= resultset.getString(12) %> //Водитель--%>
-            <%--</TD>--%>
+            <TD>
+                <%= resultset.getString(12) %>
+                <%--//Водитель--%>
+            </TD>
             <TD>
                 <%= resultset.getString(13) %>
                 <%--//Комментарий--%>
             </TD>
-            <td>
+            <%--<td>--%>
+            <%--<select name="driver">--%>
+            <%--<option value="Андрей">Андрей</option>--%>
+            <%--<option value="Владимир">Владимир</option>--%>
+            <%--<option value="Евгений">Евгений</option>--%>
+            <%--<option value="Константин">Константин</option>--%>
+            <%--</select>--%>
+            <%--</td>--%>
+            <%--<td>--%>
+            <%--<input type="text" placeholder="Назначить дату" name="date_appointment" id="date_appointment">--%>
 
-                <select name="driver">
-                    <option value="Андрей">Андрей</option>
-                    <option value="Владимир">Владимир</option>
-                    <option value="Евгений">Евгений</option>
-                    <option value="Константин">Константин</option>
-                </select>
-                <input type="hidden" name="id" value="<%=resultset.getString(1)%>">
-                <input type="hidden" name="status" value="delegated">
+
+            <%--</td>--%>
+            <td><input type="hidden" name="id" value="<%=resultset.getString(1)%>">
+                <%--<input type="hidden" name="status" value="delegated">--%>
+                <%--<% DateFormat dateFormat = new SimpleDateFormat("yy.MM.dd hh:mm:ss");--%>
+                <%--Date date = new Date();--%>
+                <%--String stringDate = dateFormat.format(date);--%>
+                <%--%>--%>
+                <%--<input type="hidden" name="date_changed" value='<%=stringDate%>'>--%>
                 <%--<input type="hidden" name="driver" value="<%driver%>">--%>
-                <input type="submit" value="Назвачить"/>
-
-            </td>
+                <input type="submit" value="Обработать"/></td>
         </form>
 
     </TR>
@@ -170,7 +196,7 @@ You clicked
 <%
     }
 %>
-
+<% connection.close();%>
 </BODY>
 
 </html>
