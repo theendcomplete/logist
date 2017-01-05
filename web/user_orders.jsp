@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: theendcomplete
+  Date: 02.01.2017
+  Time: 13:44
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page import="java.sql.Connection" %>
 <%@ page import="java.sql.DriverManager" %>
 <%@ page import="java.sql.ResultSet" %>
@@ -11,7 +18,7 @@
 
 <html>
 <head>
-    <title>Управление заявками</title>
+    <title>История заявок</title>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -26,15 +33,6 @@
 </head>
 
 <BODY>
-<%--<%--%>
-<%--//if(request.getParameter("buttonName") != null) {--%>
-<%--if (request.getParameterNames() != null) {--%>
-<%--%>--%>
-<%--You clicked--%>
-<%--<%= request.getParameter("buttonName") %>--%>
-<%--<%--%>
-<%--}--%>
-<%--%>--%>
 
 <H3>Выберите параметры отчета</H3>
 
@@ -42,18 +40,19 @@
     <p>
 
 
-        <select name="driver">
-            <option value="Андрей">Андрей</option>
-            <option value="Владимир">Владимир</option>
-            <option value="Евгений">Евгений</option>
-            <option value="Константин">Константин</option>
-        </select>
+        <%--<select name="driver">--%>
+        <%--<option value="Андрей">Андрей</option>--%>
+        <%--<option value="Владимир">Владимир</option>--%>
+        <%--<option value="Евгений">Евгений</option>--%>
+        <%--<option value="Константин">Константин</option>--%>
+        <%--</select>--%>
 
-        <select name="status">
-            <option value="new">Новые</option>
-            <option value="delegated">В работе</option>
-            <option value="done">Завершенные</option>
-        </select>
+        <%--<select name="status">--%>
+        <%--<option value="new">Новые</option>--%>
+        <%--<option value="delegated">В работе</option>--%>
+        <%--<option value="done">Завершенные</option>--%>
+        <%--</select>--%>
+
 
         <input type="text" id="date_begin" name="date_begin" placeholder="дата начала отчета (дд.мм.гг)"></p>
     <input type="text" id="date_end" name="date_end" placeholder="дата конца отчета (дд.мм.гг)"></p>
@@ -80,8 +79,10 @@
     statement.execute("SET CHARACTER SET utf8");
     statement.execute("SET NAMES utf8");
     String id = request.getParameter("id");
+    String author = request.getParameter("author");
+    String status = request.getParameter("status");
     ResultSet resultset =
-            statement.executeQuery("SELECT * FROM ORDERS WHERE status = 'new' ORDER BY (`date_deadline`) ASC ");
+            statement.executeQuery("SELECT * FROM ORDERS WHERE status = '" + status + "' AND name ='" + author + "'  ORDER BY (`date_deadline`) ASC ");
 
 %>
 <TABLE BORDER="1">
@@ -95,12 +96,7 @@
         <%--<TH>Создана:</TH>--%>
         <%--<TH>Изменена:</TH>--%>
         <%--<TH>Исполнена:</TH>--%>
-        <TH>Количество коробок</TH>
-        <TH>Путевой лист</TH>
-        <TH>Платный въезд/парковка</TH>
-        <TH>Тепло</TH>
-        <TH>За наш счёт</TH>
-        <TH>Габаритный груз</TH>
+        <TH>Тарные места</TH>
         <TH>Контрагент</TH>
         <TH>Водитель:</TH>
         <TH>Комментарий:</TH>
@@ -112,8 +108,8 @@
 
     <%
 
-        if (!resultset.next()) {
-            out.println("Sorry, could not find that publisher. ");
+        if (resultset == null) {
+            out.println("Извините, ничего не найдено ");
             connection.close();
         } else {
             while (resultset.next()) {
@@ -124,27 +120,27 @@
 
         <form action="${pageContext.request.contextPath}/singleorder" method="POST" accept-charset="UTF-8">
             <TD>
-                <%= resultset.getString("id") %>
+                <%= resultset.getString(1) %>
                 <%--//id--%>
             </TD>
             <TD>
-                <%= resultset.getString("name") %>
+                <%= resultset.getString(2) %>
                 <%--//имя--%>
             </TD>
             <TD>
-                <%= resultset.getString("address") %>
+                <%= resultset.getString(3) %>
                 <%--//Адрес--%>
             </TD>
             <TD>
-                <%= resultset.getString("target") %>
+                <%= resultset.getString(4) %>
                 <%--//Цель/--%>
             </TD>
             <TD>
-                <%= resultset.getString("status") %>
+                <%= resultset.getString(5) %>
                 <%--//Статус--%>
             </TD>
             <TD>
-                <%= resultset.getString("date_deadline") %>
+                <%= resultset.getString(6) %>
                 <%--//дедлайн--%>
             </TD>
             <%--<TD>--%>
@@ -157,41 +153,19 @@
             <%--<%= resultset.getString(9) %> //Исполнена--%>
             <%--</TD>--%>
             <TD>
-                <%= resultset.getString("boxes") %>
+                <%= resultset.getString(10) %>
                 <%--//тарные места--%>
             </TD>
             <TD>
-                <%= resultset.getString("putevoi") %>
-                <%--//тарные места--%>
-            </TD>
-            <TD>
-                <%= resultset.getString("parking") %>
-                <%--//тарные места--%>
-            </TD>
-            <TD>
-                <%= resultset.getString("heat") %>
-                <%--//тарные места--%>
-            </TD>
-            <TD>
-                <%= resultset.getString("we_pay") %>
-                <%--//тарные места--%>
-            </TD>
-            <TD>
-                <%= resultset.getString("big") %>
-                <%--//тарные места--%>
-            </TD>
-
-
-            <TD>
-                <%= resultset.getString("kontragent") %>
+                <%= resultset.getString(11) %>
                 <%--//Контрагент--%>
             </TD>
             <TD>
-                <%= resultset.getString("driver") %>
+                <%= resultset.getString(12) %>
                 <%--//Водитель--%>
             </TD>
             <TD>
-                <%= resultset.getString("comment") %>
+                <%= resultset.getString(13) %>
                 <%--//Комментарий--%>
             </TD>
             <%--<td>--%>
@@ -207,21 +181,21 @@
 
 
             <%--</td>--%>
-            <%--<%--%>
-            <%--if (resultset.getString(5).equals("new")) {--%>
-            <%--%>--%>
-
-            <td><input type="hidden" name="id" value="<%=resultset.getString(1)%>">
-                <%--<input type="hidden" name="status" value="delegated">--%>
-                <%--<% DateFormat dateFormat = new SimpleDateFormat("yy.MM.dd hh:mm:ss");--%>
-                <%--Date date = new Date();--%>
-                <%--String stringDate = dateFormat.format(date);--%>
-                <%--%>--%>
-                <%--<input type="hidden" name="date_changed" value='<%=stringDate%>'>--%>
-                <%--<input type="hidden" name="driver" value="<%driver;%>">--%>
-                <input type="submit" value="Обработать"/></td>
             <%
-                //                }
+                if (resultset.getString(5).equals("new")) {
+            %>
+
+            <%--<td><input type="hidden" name="id" value="<%=resultset.getString(1)%>">--%>
+            <%--&lt;%&ndash;<input type="hidden" name="status" value="delegated">&ndash;%&gt;--%>
+            <%--&lt;%&ndash;<% DateFormat dateFormat = new SimpleDateFormat("yy.MM.dd hh:mm:ss");&ndash;%&gt;--%>
+            <%--&lt;%&ndash;Date date = new Date();&ndash;%&gt;--%>
+            <%--&lt;%&ndash;String stringDate = dateFormat.format(date);&ndash;%&gt;--%>
+            <%--&lt;%&ndash;%>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;<input type="hidden" name="date_changed" value='<%=stringDate%>'>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;<input type="hidden" name="driver" value="<%driver;%>">&ndash;%&gt;--%>
+            <%--<input type="submit" value="Обработать"/></td>--%>
+            <%
+                }
             %>
         </form>
 
@@ -236,10 +210,7 @@
 <%
     }
 %>
-<% connection.close();
-
-
-%>
+<% connection.close();%>
 </BODY>
 
 </html>

@@ -23,5 +23,7 @@
     <orderEntry type="library" name="mysql-connector-java-6.0.5-bin" level="project" />
     <orderEntry type="library" name="postgresql-9.4.1212.jre6" level="project" />
     <orderEntry type="library" name="mysql-connector-java-6.0.5-bin1" level="project" />
+    <orderEntry type="library" name="jquery-1.12.4" level="application" />
+    <orderEntry type="library" name="jquery-ui" level="application" />
   </component>
 </module>

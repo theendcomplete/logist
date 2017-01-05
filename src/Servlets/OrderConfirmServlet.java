@@ -45,6 +45,27 @@ public class OrderConfirmServlet extends HttpServlet {
         String comment = (request.getParameter("comment"));
         request.setAttribute("comment", comment);
 
+        String sum = (request.getParameter("sum"));
+        request.setAttribute("sum", sum);
+
+        String parking = (request.getParameter("parking"));
+        request.setAttribute("parking", parking);
+
+
+        String heat = (request.getParameter("heat"));
+        request.setAttribute("heat", heat);
+
+        String putevoi = (request.getParameter("putevoi"));
+        request.setAttribute("putevoi", putevoi);
+
+
+        String we_pay = (request.getParameter("we_pay"));
+        request.setAttribute("we_pay", we_pay);
+
+
+        String big = (request.getParameter("big"));
+        request.setAttribute("big", big);
+
         String kontragent = (request.getParameter("kontragent"));
         request.setAttribute("kontragent", kontragent);
 

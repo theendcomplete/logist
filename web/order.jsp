@@ -31,9 +31,23 @@
     <%--//---Рабочий />--%>
 </head>
 <body>
+<H2>История заявок</H2>
+<form action="${pageContext.request.contextPath}/user_orders.jsp" method="POST">
+    <input type="text" name="author" placeholder="Введите имя для просмотра истории заявок" value=""
+           align="right"/>
+    <select name="status">
+        <option value="new">Новые</option>
+        <option value="delegated">В работе</option>
+        <option value="done">Завершенные</option>
+    </select>
+    <input type="submit" value="Посмотреть заявки"/>
+</form>
 
 
 <H1>Создание заявки на транспортировку</H1>
+телефон отдела логистики: 1922 <br>
+<%--e-mail: logist@dances.ru--%>
+e-mail:<a href="mailto:logist@dances.ru">logist@dances.ru</a>
 
 
 <form action="${pageContext.request.contextPath}/confirm" method="POST">
@@ -42,7 +56,16 @@
     <p>
     <h3>
         Ваше имя:</h3>
+
+
     <input type="text" name="name" placeholder="Василий Пупкин" value=""/>
+
+    <p>
+
+
+    </p>
+
+
     </p>
 
     <h3>
@@ -75,14 +98,30 @@
     <p>
         <input type="text" id="address" name="address" placeholder="Введите алрес"></p>
     <h3>
-        Количество тарных мест:
+        Количество коробок:
     </h3>
 
     <p>
         <input type="text" id="boxes" name="boxes" placeholder="1" value="1">
     </p>
+    <h3>
+        Сумма:
+    </h3>
 
+    <p>
+        <input type="text" id="sum" name="sum" placeholder="0" value="0">
+    </p>
 
+    <h3>
+        Сумма:
+    </h3>
+    <p>
+        <input type="checkbox" name="putevoi" id="putevoi"> Путевой лист
+        <input type="checkbox" name="parking" id="parking"> Платный въезд\парковка
+        <input type="checkbox" name="heat" id="heat"> Тепло <BR>
+        <input type="checkbox" name="we_pay" id="we_pay"> Отправка за наш счет
+        <input type="checkbox" name="big" id="big"> Габаритный груз
+    </p>
     <h3>
         Комментарий
     </h3>
